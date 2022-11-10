@@ -323,6 +323,8 @@ public class MainActivity extends BaseActivity {
 
 						/*returnNaverOCR_VER_1(new JSONObject(json.getString("rciptOcrInfo")));*/
 						returnNaverOCR_VER_1(new JSONObject(json.getString("rciptOcrInfo")), new JSONObject(json.getString("ocrInfo")));
+
+						Log.d("tag", "onResult: " + json.get("ocrInfo"));
 					}
 					return;
 				} catch (Exception e){
@@ -370,10 +372,13 @@ public class MainActivity extends BaseActivity {
 		MyUtil.log(rciptOcrInfoObj.toString());
 		MyUtil.log(ocrInfo.toString());
 
-		Log.d("오씨알 데이터", "오씨알 데이터55555" + ocrInfo );
+
 
 		boolean error = false;
 
+//		JSONObject result = ocrInfo.getJSONArray("images").getJSONObject(0).getJSONObject("receipt").getJSONObject("result");
+
+		Log.d("오씨알 데이터", "결과가 되나요?" + ocrInfo );
 		try {
 
 			String store_nm = rciptOcrInfoObj.getString("ocrStoreNm");
