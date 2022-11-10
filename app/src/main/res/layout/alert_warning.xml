@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout android:orientation="vertical"
+		android:background="@drawable/border_round12_fff"
+		android:padding="16dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/txtTitle"
+			android:layout_marginTop="11dp"
+			android:layout_width="match_parent"
+			android:layout_height="56dp"
+			android:layout_centerInParent="true"
+			android:gravity="center"
+			android:letterSpacing="-0.02"
+			android:lineSpacingExtra="9sp"
+			android:text="회원탈퇴"
+			android:textColor="#000000"
+			android:textSize="18sp"
+			android:textStyle="bold" />
+
+		<TextView android:id="@+id/ment"
+			android:text="회원탈퇴가 완료되었습니다."
+			android:layout_marginTop="16dp"
+			android:textSize="16sp"
+			android:gravity="center"
+			android:letterSpacing="-0.02"
+			android:textColor="#ff5555"
+			android:textStyle="bold"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+		<TextView android:id="@+id/msg"
+			android:text="꿀트립은 회원님과 다시 만나길 고대하며,\n언제나 나은 서비스를 위해 노력하겠습니다."
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:gravity="center"
+			android:letterSpacing="-0.02"
+			android:textColor="#181818"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+		<TextView android:id="@+id/ment2" android:visibility="gone"
+			android:text="영수증은 정산 신청 전까지 재등록이 가능하며,\n문의사항은 고객센터로 연락 부탁드립니다."
+			android:layout_marginTop="8dp"
+			android:layout_marginBottom="24dp"
+			android:textSize="14sp"
+			android:gravity="center"
+			android:letterSpacing="-0.02"
+			android:textColor="#ff5555"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+
+		<LinearLayout android:orientation="horizontal"
+			android:gravity="center"
+			android:layout_marginTop="24dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView android:id="@+id/btnOK"
+				android:textSize="20sp"
+				android:lineSpacingExtra="4sp"
+				android:gravity="center"
+				android:letterSpacing="-0.02"
+				android:textColor="#ffffff"
+				android:text="확인"
+				android:padding="16dp"
+				android:background="@drawable/border_round12_ff5555"
+				android:layout_weight="1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+			<TextView android:id="@+id/btnCancel"
+				android:visibility="gone"
+				android:textSize="20sp"
+				android:layout_marginLeft="10dp"
+				android:lineSpacingExtra="4sp"
+				android:gravity="center"
+				android:letterSpacing="-0.02"
+				android:textColor="#555555"
+				android:text="취소"
+				android:padding="16dp"
+				android:background="@drawable/border_round10_shadow_ffffff"
+				android:layout_weight="1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>
