@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import org.jsoup.Connection;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -321,10 +322,16 @@ public class MainActivity extends BaseActivity {
 						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원할하지 않습니다. \n 잠시후 이용해 주세요 ");
 					} else if (json.getString("result").equals("Y")){
 
-						/*returnNaverOCR_VER_1(new JSONObject(json.getString("rciptOcrInfo")));*/
-						returnNaverOCR_VER_1(new JSONObject(json.getString("rciptOcrInfo")), new JSONObject(json.getString("ocrInfo")));
-
-						Log.d("tag", "onResult: " + json.get("ocrInfo"));
+						try{
+							naverOcrVer_1(json.getJSONObject("rciptOcrInfo"));
+						} catch (Exception e){
+							MyUtil.printStackTrace(e);
+						}
+						try{
+							naverRciptOcrVer_1(json.getJSONObject("ocrCombineInfo"));
+						} catch (Exception e){
+							MyUtil.printStackTrace(e);
+						}
 					}
 					return;
 				} catch (Exception e){
@@ -338,49 +345,16 @@ public class MainActivity extends BaseActivity {
 	}
 
 
-	private void API_requestOCR() {
-		HashMap<String, String> map = new HashMap<>();
-		map.put("fileId", getString(jsonOCR, "fileId"));
-		JsoupTask task = new JsoupTask(getApplicationContext(), MyUtil.ADMIN_URL + "/api/ocrData", Connection.Method.POST,  new MyUtil.JsonListener() {
-			@Override
-			public void onResult(JSONObject json) {
-				try {
-					if( json == null ) {
-						showToast("네트워크 환경을 확인해 주세요 ");
-					} else if (json.has("HTTP_CODE")) {
-						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원활하지 않습니다.\n잠시 후 이용해 주세요");
-					} else  if( json.getString("result").equals("N")) {
-						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원활하지 않습니다.\n잠시 후 이용해 주세요");
-					} else  if( json.getString("result").equals("Y")) {
-						returnNaverOCR(new JSONObject(json.getString("ocrData")));
-						return;
-					}
-				}catch(Exception e) {
-					MyUtil.printStackTrace(e);
-					showFailMsg("영수증 인증","영수증 인식에 실패하였습니다", "깨끗한 배경에 영수증을 놓고 처음부터 끝까지 잘 나오도록\n촬영해주시길 바랍니다.");
-				}
-			}
-		});
-		task.addData(map);
-		task.execute();
-	}
+
 
 	/*NAVER OCR 결과 ver_1*/
-	private void returnNaverOCR_VER_1(JSONObject rciptOcrInfoObj, JSONObject ocrInfo) throws JSONException {
-
+	private void naverOcrVer_1(JSONObject rciptOcrInfoObj) {
 
 		MyUtil.log(rciptOcrInfoObj.toString());
-		MyUtil.log(ocrInfo.toString());
-
-
 
 		boolean error = false;
 
-//		JSONObject result = ocrInfo.getJSONArray("images").getJSONObject(0).getJSONObject("receipt").getJSONObject("result");
-
-		Log.d("오씨알 데이터", "결과가 되나요?" + ocrInfo );
 		try {
-
 			String store_nm = rciptOcrInfoObj.getString("ocrStoreNm");
 			String ocr_pay_amt = rciptOcrInfoObj.getString("ocrPayAmt");
 			String bizrno = rciptOcrInfoObj.getString("ocrBizrno");
@@ -388,11 +362,12 @@ public class MainActivity extends BaseActivity {
 			String addr = rciptOcrInfoObj.getString("addr");
 			String ocr_confm_num = rciptOcrInfoObj.getString("ocrConfmNum");
 
-			jsonOCR.put("ocrStoreNm", store_nm);
-			jsonOCR.put("ocrBizrno", bizrno);
-			jsonOCR.put("ocrPayDttm", ocrDatetime);
-			jsonOCR.put("ocrPayAmt", ocr_pay_amt);
-			jsonOCR.put("addr", addr);
+			jsonOCR.put("ocrStoreNm1", store_nm);
+			jsonOCR.put("ocrBizrno1", bizrno);
+			jsonOCR.put("ocrPayDttm1", ocrDatetime);
+			jsonOCR.put("ocrPayAmt1", ocr_pay_amt);
+			jsonOCR.put("ocrAddr1", addr);
+			jsonOCR.put("ocrConfmNum1", ocr_confm_num);
 
 
 			setText(findViewById(R.id.storeName3), store_nm);
@@ -401,6 +376,7 @@ public class MainActivity extends BaseActivity {
 			setText(findViewById(R.id.pay_date), ocrDatetime);
 			setText(findViewById(R.id.hive_addr3), addr);
 			setText(findViewById(R.id.amount3), ocr_pay_amt);
+
 
 			MyUtil.log(jsonOCR.toString());
 
@@ -415,15 +391,78 @@ public class MainActivity extends BaseActivity {
 		fadeShow(findViewById(R.id.step1), findViewById(R.id.step2));
 		return;
 	}
+	private void naverRciptOcrVer_1(JSONObject obj){
+		MyUtil.log("네이버 영수증 OCR~~~~~~~~~~~");
+		MyUtil.log(obj.toString());
+
+		boolean error = false;
+
+//		JSONObject result = ocrInfo.getJSONArray("images").getJSONObject(0).getJSONObject("receipt").getJSONObject("result");
+
+
+		try {
+//
+//			JSONObject result = ocrCombineInfo.getJSONObject("");
+//			Log.d("OCR data", "결과가 되나요?" + result);
+
+
+			String store_nm = obj.getString("ocrStoreNm");
+			String ocr_pay_amt = obj.getString("ocrPayAmt");
+			String bizrno = obj.getString("ocrBizrno");
+			String ocrDatetime = obj.getString("ocrPayDttm");
+			String addr = obj.getString("addr");
+			String ocr_confm_num = obj.getString("ocrConfmNum");
+
+			jsonOCR.put("naverOcrStoreNm1", store_nm);
+			jsonOCR.put("naverOcrBizrno1", bizrno);
+			jsonOCR.put("naverOcrPayDttm1", ocrDatetime);
+			jsonOCR.put("naverOcrPayAmt1", ocr_pay_amt);
+			jsonOCR.put("naverOcrAddr1", addr);
+			jsonOCR.put("naverOcrConfmNum1", ocr_confm_num);
+
+
+			setText(findViewById(R.id.ocr_storeName3), store_nm);
+			setText(findViewById(R.id.ocr_bizrno3), bizrno);
+			setText(findViewById(R.id.ocr_confm_num3), ocr_confm_num);
+			setText(findViewById(R.id.ocr_pay_date), ocrDatetime);
+			setText(findViewById(R.id.ocr_hive_addr3), addr);
+			setText(findViewById(R.id.ocr_amount3), ocr_pay_amt);
+
+
+			MyUtil.log(jsonOCR.toString());
+
+		} catch (Exception e){
+			MyUtil.printStackTrace(e);
+			error = true;
+		} if( error ) {
+			showFailMsg("영수증 인증","영수증 인식에 실패하였습니다", "영수증 사진을 확인 바랍니다.22");
+			return;
+		}
+
+		fadeShow(findViewById(R.id.step1), findViewById(R.id.step2));
+		return;
+
+
+
+
+
+	}
+
+
 
 
 	/* NAVER 영수증 OCR 결과 */
 	private void returnNaverOCR(JSONObject obj) {
+		MyUtil.log("######################################이거 보자");
+
 		MyUtil.log(obj.toString());
 
 		String bizrno = "";
 		boolean error = false;
 		try {
+
+
+
 			 JSONArray images = obj.getJSONArray("images");
 			 JSONObject obj0 = images.getJSONObject(0);
 
@@ -538,4 +577,32 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 	}
+
+//	private void API_requestOCR() {
+//		HashMap<String, String> map = new HashMap<>();
+//		map.put("fileId", getString(jsonOCR, "fileId"));
+//		JsoupTask task = new JsoupTask(getApplicationContext(), MyUtil.ADMIN_URL + "/api/ocrData", Connection.Method.POST,  new MyUtil.JsonListener() {
+//			@Override
+//			public void onResult(JSONObject json) {
+//				try {
+//					if( json == null ) {
+//						showToast("네트워크 환경을 확인해 주세요 ");
+//					} else if (json.has("HTTP_CODE")) {
+//						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원활하지 않습니다.\n잠시 후 이용해 주세요");
+//					} else  if( json.getString("result").equals("N")) {
+//						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원활하지 않습니다.\n잠시 후 이용해 주세요");
+//					} else  if( json.getString("result").equals("Y")) {
+//						returnNaverOCR(new JSONObject(json.getString("ocrData")));
+//
+//						return;
+//					}
+//				}catch(Exception e) {
+//					MyUtil.printStackTrace(e);
+//					showFailMsg("영수증 인증","영수증 인식에 실패하였습니다", "깨끗한 배경에 영수증을 놓고 처음부터 끝까지 잘 나오도록\n촬영해주시길 바랍니다.");
+//				}
+//			}
+//		});
+//		task.addData(map);
+//		task.execute();
+//	}
 }
