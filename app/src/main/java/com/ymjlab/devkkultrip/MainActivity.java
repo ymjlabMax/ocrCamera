@@ -6,12 +6,14 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity {
 
 	private Uri saveUri;
 	private JSONObject jsonOCR = new JSONObject();
+	private JSONObject jsonOCR_2 = new JSONObject();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -349,7 +352,7 @@ public class MainActivity extends BaseActivity {
 
 	/*NAVER OCR 결과 ver_1*/
 	private void naverOcrVer_1(JSONObject rciptOcrInfoObj) {
-
+		MyUtil.log("고도화 OCR~~~~~~~~~~~");
 		MyUtil.log(rciptOcrInfoObj.toString());
 
 		boolean error = false;
@@ -378,6 +381,7 @@ public class MainActivity extends BaseActivity {
 			setText(findViewById(R.id.amount3), ocr_pay_amt);
 
 
+
 			MyUtil.log(jsonOCR.toString());
 
 		} catch (Exception e){
@@ -392,20 +396,11 @@ public class MainActivity extends BaseActivity {
 		return;
 	}
 	private void naverRciptOcrVer_1(JSONObject obj){
-		MyUtil.log("네이버 영수증 OCR~~~~~~~~~~~");
+		MyUtil.log("기존~~~~~~~~~~~");
 		MyUtil.log(obj.toString());
 
 		boolean error = false;
-
-//		JSONObject result = ocrInfo.getJSONArray("images").getJSONObject(0).getJSONObject("receipt").getJSONObject("result");
-
-
 		try {
-//
-//			JSONObject result = ocrCombineInfo.getJSONObject("");
-//			Log.d("OCR data", "결과가 되나요?" + result);
-
-
 			String store_nm = obj.getString("ocrStoreNm");
 			String ocr_pay_amt = obj.getString("ocrPayAmt");
 			String bizrno = obj.getString("ocrBizrno");
@@ -413,23 +408,49 @@ public class MainActivity extends BaseActivity {
 			String addr = obj.getString("addr");
 			String ocr_confm_num = obj.getString("ocrConfmNum");
 
-			jsonOCR.put("naverOcrStoreNm1", store_nm);
-			jsonOCR.put("naverOcrBizrno1", bizrno);
-			jsonOCR.put("naverOcrPayDttm1", ocrDatetime);
-			jsonOCR.put("naverOcrPayAmt1", ocr_pay_amt);
-			jsonOCR.put("naverOcrAddr1", addr);
-			jsonOCR.put("naverOcrConfmNum1", ocr_confm_num);
+			jsonOCR_2.put("naverOcrStoreNm1", store_nm);
+			jsonOCR_2.put("naverOcrBizrno1", bizrno);
+			jsonOCR_2.put("naverOcrPayDttm1", ocrDatetime);
+			jsonOCR_2.put("naverOcrPayAmt1", ocr_pay_amt);
+			jsonOCR_2.put("naverOcrAddr1", addr);
+			jsonOCR_2.put("naverOcrConfmNum1", ocr_confm_num);
 
 
-			setText(findViewById(R.id.ocr_storeName3), store_nm);
-			setText(findViewById(R.id.ocr_bizrno3), bizrno);
-			setText(findViewById(R.id.ocr_confm_num3), ocr_confm_num);
+			setText(findViewById(R.id.ocr_store_name), store_nm);
+			setText(findViewById(R.id.ocr_bizrno), bizrno);
+			setText(findViewById(R.id.ocr_confm_num), ocr_confm_num);
 			setText(findViewById(R.id.ocr_pay_date), ocrDatetime);
-			setText(findViewById(R.id.ocr_hive_addr3), addr);
-			setText(findViewById(R.id.ocr_amount3), ocr_pay_amt);
+			setText(findViewById(R.id.ocr_hive_addr), addr);
+			setText(findViewById(R.id.ocr_amount), ocr_pay_amt);
 
 
-			MyUtil.log(jsonOCR.toString());
+			TextView tvOcrStoreName = findViewById(R.id.ocr_store_name);
+			TextView tvOcrBizrno = findViewById(R.id.ocr_bizrno);
+			TextView tvOcrConfmNum = findViewById(R.id.ocr_confm_num);
+			TextView tvOcrPayDate = findViewById(R.id.ocr_pay_date);
+			TextView tvOcrHiveAddr = findViewById(R.id.ocr_hive_addr);
+			TextView ocrAmount = findViewById(R.id.ocr_amount);
+
+
+			if(!tvOcrStoreName.getText().toString().equals(jsonOCR.getString("ocrStoreNm1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			if(!tvOcrBizrno.getText().toString().equals(jsonOCR.getString("ocrBizrno1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			if(!tvOcrConfmNum.getText().toString().equals(jsonOCR.getString("ocrConfmNum1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			if(!tvOcrPayDate.getText().toString().equals(jsonOCR.getString("ocrPayDttm1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			if(!tvOcrHiveAddr.getText().toString().equals(jsonOCR.getString("ocrAddr1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			if(!ocrAmount.getText().toString().equals(jsonOCR.getString("ocrPayAmt1"))){
+				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
+			}
+			MyUtil.log(jsonOCR_2.toString());
 
 		} catch (Exception e){
 			MyUtil.printStackTrace(e);

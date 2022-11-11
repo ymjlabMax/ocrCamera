@@ -12,12 +12,14 @@
 		android:scaleType="fitCenter"
 		android:layout_weight="1"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" />
+		android:layout_height="match_parent"
+		android:layout_marginTop="10dp"/>
 
 	<LinearLayout android:id="@+id/step1"    android:gravity="center"
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" >
+		android:layout_height="wrap_content"
+		>
 		<Button
 			android:id="@+id/camera"
 			android:text="촬영"
@@ -59,11 +61,11 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical">
+			android:orientation="vertical"
+			android:background="@drawable/border_box_2">
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -72,16 +74,16 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="사업자번호"
+					android:text="OCR 사업자번호"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/ocr_bizrno3"
+					android:id="@+id/ocr_bizrno"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-					android:hint="사업자번호"
+					android:hint="OCR 사업자번호"
 					android:gravity="right"
 					android:padding="3dp"
 					android:textColor="#181818"
@@ -91,7 +93,6 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -105,7 +106,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/ocr_storeName3"
+					android:id="@+id/ocr_store_name"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
@@ -119,7 +120,6 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -133,7 +133,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/ocr_confm_num3"
+					android:id="@+id/ocr_confm_num"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
@@ -147,7 +147,6 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -182,7 +181,6 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -196,7 +194,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/ocr_amount3"
+					android:id="@+id/ocr_amount"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
@@ -211,7 +209,6 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#fff"
 				android:orientation="horizontal"
 				android:padding="2dp">
 
@@ -225,7 +222,7 @@
 					android:textSize="12sp" />
 
 				<TextView
-					android:id="@+id/ocr_hive_addr3"
+					android:id="@+id/ocr_hive_addr"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
@@ -256,7 +253,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="네이버 사업자번호"
+					android:text="영수증 OCR 사업자번호"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
@@ -283,7 +280,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="네이버 매장명"
+					android:text="영수증 OCR 매장명"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
@@ -310,7 +307,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="네이버 승인번호"
+					android:text="영수증 OCR 승인번호"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
@@ -337,7 +334,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="네이버 거래일시"
+					android:text="영수증 OCR 거래일시"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
@@ -371,7 +368,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="2"
 					android:gravity="start"
-					android:text="네이버 거래금액"
+					android:text="영수증 OCR 거래금액"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
@@ -399,7 +396,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginRight="5dp"
 					android:gravity="start"
-					android:text="네이버 주소"
+					android:text="영수증 OCR 주소"
 					android:textColor="#757575"
 					android:textSize="12sp" />
 
