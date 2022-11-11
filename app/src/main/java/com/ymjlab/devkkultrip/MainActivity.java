@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -56,6 +57,10 @@ public class MainActivity extends BaseActivity {
 	private JSONObject jsonOCR = new JSONObject();
 	private JSONObject jsonOCR_2 = new JSONObject();
 
+
+	ProgressDialog customProgressDialog;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,18 +95,28 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 
+		customProgressDialog = new ProgressDialog(this);
+		customProgressDialog.setCancelable(false);
+
+		customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
 		findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				customProgressDialog.show();
 				API_sendImage(getApplicationContext().getCacheDir().getAbsolutePath()+"/"+saveUri.getLastPathSegment());
 			}
 		});
+
 		findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				fadeShow(findViewById(R.id.step2), findViewById(R.id.step1));
 			}
 		});
+
+
 
 		checkPermissions();
 	}
@@ -246,7 +261,9 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void showNoPermissionToastAndFinish() {
+		customProgressDialog.dismiss();
 		showToast("권한 요청에 동의 해주셔야 이용 가능합니다. 설정에서 권한 허용 하시기 바랍니다.");
+
 		startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
 			Uri.fromParts("package", getPackageName(), null)));
 	}
@@ -274,6 +291,7 @@ public class MainActivity extends BaseActivity {
 				@Override
 				public void onError(UploadInfo uploadInfo, Exception exception) {
 					MyUtil.log("onError " + exception);
+					customProgressDialog.dismiss();
 					showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원활하지 않습니다.\n잠시 후 이용해 주세요");
 				}
 				@Override
@@ -294,6 +312,7 @@ public class MainActivity extends BaseActivity {
 					}catch(Exception e) {
 						MyUtil.printStackTrace(e);
 					}
+					customProgressDialog.dismiss();
 					showFailMsg("오류", "데이터 전송에 실패했습니다.", "네트워크 상태를 확인 하시고 재시도 해주세요.");
 				}
 				@Override
@@ -304,6 +323,7 @@ public class MainActivity extends BaseActivity {
 			request.startUpload();
 		}catch(Exception e) {
 			e.printStackTrace();
+			customProgressDialog.dismiss();
 			showFailMsg("오류", "데이터 전송에 실패했습니다.", "네트워크 상태를 확인 하시고 재시도 해주세요.");
 		} finally {
 		}
@@ -318,27 +338,35 @@ public class MainActivity extends BaseActivity {
 			public void onResult(JSONObject json){
 				try{
 					if( json == null){
+						customProgressDialog.dismiss();
 						showToast("네트워크 환경을 확인해 주세요.");
 					} else if (json.has("HTTP_CODE")){
+						customProgressDialog.dismiss();
 						showFailMsg("알림", "오류가 발생했습니다.","서버와의 통신이 원할하지 않습니다. \n 잠시후 이용해 주세요.");
 					} else if (json.getString("result").equals("N")){
+						customProgressDialog.dismiss();
 						showFailMsg("알림", "오류가 발생했습니다.", "서버와의 통신이 원할하지 않습니다. \n 잠시후 이용해 주세요 ");
 					} else if (json.getString("result").equals("Y")){
 
 						try{
 							naverOcrVer_1(json.getJSONObject("rciptOcrInfo"));
 						} catch (Exception e){
+							customProgressDialog.dismiss();
 							MyUtil.printStackTrace(e);
+							showFailMsg("새로운 OCR ", "영수증 인증 실패","코드 확인 바랍니다.");
 						}
 						try{
 							naverRciptOcrVer_1(json.getJSONObject("ocrCombineInfo"));
 						} catch (Exception e){
+							customProgressDialog.dismiss();
 							MyUtil.printStackTrace(e);
+							showFailMsg("네이버 영수증 OCR ", "영수증 인증 실패","코드 확인 바랍니다.");
 						}
 					}
 					return;
 				} catch (Exception e){
 					MyUtil.printStackTrace(e);
+					customProgressDialog.dismiss();
 					showFailMsg("새로운 OCR ", "영수증 인증 실패","코드 확인 바랍니다.");
 				}
 			}
@@ -388,6 +416,7 @@ public class MainActivity extends BaseActivity {
 			MyUtil.printStackTrace(e);
 			error = true;
 		} if( error ) {
+			customProgressDialog.dismiss();
 			showFailMsg("영수증 인증","영수증 인식에 실패하였습니다", "영수증 사진을 확인 바랍니다.22");
 			return;
 		}
@@ -450,12 +479,14 @@ public class MainActivity extends BaseActivity {
 			if(!ocrAmount.getText().toString().equals(jsonOCR.getString("ocrPayAmt1"))){
 				tvOcrStoreName.setTextColor(Color.parseColor("#F51F01"));
 			}
+			customProgressDialog.dismiss();
 			MyUtil.log(jsonOCR_2.toString());
 
 		} catch (Exception e){
 			MyUtil.printStackTrace(e);
 			error = true;
 		} if( error ) {
+			customProgressDialog.dismiss();
 			showFailMsg("영수증 인증","영수증 인식에 실패하였습니다", "영수증 사진을 확인 바랍니다.22");
 			return;
 		}
