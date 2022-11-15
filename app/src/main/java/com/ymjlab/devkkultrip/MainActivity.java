@@ -95,9 +95,9 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 
+		// 로딩 화면 생성 하기
 		customProgressDialog = new ProgressDialog(this);
 		customProgressDialog.setCancelable(false);
-
 		customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
