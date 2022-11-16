@@ -83,7 +83,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-					android:hint="OCR 사업자번호"
+					android:hint="사업자번호"
 					android:gravity="right"
 					android:padding="3dp"
 					android:textColor="#181818"
